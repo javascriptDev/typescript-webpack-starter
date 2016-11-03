@@ -1,44 +1,276 @@
-import { Observable } from 'rxjs/Observable';
+//变量声明
+!function(){
+  let name = 'addison';
+  const myname = 'addison';
+}()
 
+//解构
+!function(){
+  let input = [1,2];
+  let [first,second] = input;
+  console.log(`first : ${first}`); //1
+  console.log(`second : ${second}`);//2
 
-class Greeter {
-    greeting: string;
-    constructor(message: string) {
-        this.greeting = message;
+  let [f,...rest] = [1,2,3,4,5];
+  console.log(`f : ${f}`);//1
+  console.log(`rest : ${rest},length: ${rest.length}`);//[2,3,4,5]
+}()
+
+//接口
+!function(){
+  //属性描述接口
+  !function(){
+    interface Person{
+      //默认属性
+      name : string;
+      //可选属性
+      jobs ?: string;
+      //只读属性
+      readonly age : number;
+      //其他自定义属性,如果没有这个属性,给实例赋值其他属性,则失败.
+      [propName: string]: any;
     }
 
-    @aa
-    greet() {
-        alert("Hello, " + this.greeting); 
+    let person: Person = {
+      name:'addison',
+      age:12,
+      jobs:'coder',
+      gender:'female'
+    };
+
+    console.log(person);
+  }()
+
+
+  //函数类型接口
+  !function(){
+    
+    interface HelpFunc{
+      (source: string, result: string): boolean;
     }
-}
 
-function aa(target:any,propertyName:String,descriptor:TypedPropertyDescriptor<Function>){
-    let value =  descriptor.value;
-   descriptor.value = function(){
+    //使用接口
+    let myHelpFunc: HelpFunc;
+    myHelpFunc = function (source: string,result: string) {
+      return false;
+    }
+  }()
 
-       return alert('@aa Decorator'),value.apply(this,arguments);
-   };
-}
+  //可索引类型
+  !function(){
+    interface ArrayDemo{
+      [index: number]:string;
+    }
+
+    let myArray: ArrayDemo;
+    myArray = ['addison','joe'];
+    let result: String = myArray[0];
+    console.log(`result: ${result}`);
+
+
+    class Animal {
+      name: string;
+    }
+    class Dog extends Animal {
+        breed: string;
+
+
+    }
+    console.log(new Dog().name);
+  }()
+
+  //类类型接口
+  !function(){
+    //定义接口
+    interface Animal{
+      age :number;
+      eat():void;
+    }
+
+    //实现接口
+    class cat implements Animal{
+      age:number;
+      eat(){
+        console.log(`age: ${this.age},eating;`)
+      }
+      constructor(age:number){
+        this.age = age;
+      }
+    }
+
+    new cat(123).eat();
+
+
+    //拓展接口
+    interface Shape{
+      color: string;
+    }
+
+    interface Square extends Shape{
+      sideLength: number;
+    }
+
+    interface rect{
+      width: number;
+    }
+    interface Circle extends Square,rect{
+      r: number;
+    }
+
+    let square = <Square>{};
+    square.color = 'red';
+    square.sideLength = 10;
+    console.log(square);
+
+
+    let circle = <Circle>{};
+    circle.r = 10;
+    circle.color='green';
+    circle.sideLength = 100;
+    circle.width = 123;
+    console.log(circle);
+  }()
+
+  //混合类型接口
+  !function(){
+    interface Counter{
+      (start: number): string;
+      interval:number;
+      reset():void;
+    }
+
+    function getCounter():Counter{
+      let counter = <Counter>function(start: number){};
+      counter.interval = 1;
+      counter.reset = function(){};
+      return counter;
+    }
+
+    let c = getCounter();
+    c(10);
+    c.reset();
+    c.interval = 2;
+    console.log(c.interval);
+  }()
+}()
+
+
+//类
+!function(){
+
+  //基础类
+  !function(){
+    class Greeter {
+      greeting: string;
+      constructor(message: string) {
+          this.greeting = message;
+      }
+      greet() {
+          return "Hello, " + this.greeting;
+      }
+    }
+
+    let greeter = new Greeter("world");
+    console.log(greeter);
+  }()
+
+  //类继承
+  !function(){
+    class Animal {
+      name:string;
+      constructor(theName: string) { this.name = theName; }
+      move(distanceInMeters: number = 0) {
+          console.log(`${this.name} moved ${distanceInMeters}m.`);
+      }
+    }
+
+    class Snake extends Animal {
+        constructor(name: string) { super(name); }
+        move(distanceInMeters = 5) {
+            console.log("Slithering...");
+            super.move(distanceInMeters);
+        }
+    }
+
+    new Snake('addison').move(30);
+  }()
+
+  //访问控制修饰符
+  !function(){
+    class Person {
+      //保护成员. 子类只可以访问,不可修改
+      protected name: string;
+      //私有成员
+      private   age: number;
+      //默认公有成员
+      gender : number;
+      constructor(name: string) { this.name = name; };
+    }
+
+    class boy extends Person{
+      constructor(name: string){
+        super(name);
+      }
+      show(){
+        console.log(this.name);
+      }
+    }
+    let addison = new boy('addison');
+    addison.show();
+    
+  }()  
+}()
 
 
 
-new Greeter("addison").greet();
 
 
-//RX demo
-var foo = Observable.create(function (observer) {
-  console.log('Hello');
-  observer.next(42);
-  observer.next(100);
-  observer.next(200);
-  setTimeout(() => {
-    observer.next(300); // happens asynchronously
-  }, 1000);
-});
 
-console.log('before');
-foo.subscribe(function (x) {
-  console.log(x);
-});
-console.log('after');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
