@@ -48,6 +48,7 @@
     "install": "^0.8.2",
     "npm": "^3.10.9",
     "rxjs-es": "^5.0.0-beta.12",
+    "typescript-helpers": "^1.0.0",
     "zone.js": "~0.6.17"
   },
   "devDependencies": {
